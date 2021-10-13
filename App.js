@@ -1,99 +1,86 @@
 import React, {Component} from "react";
-import {View, StyleSheet, Text, Button} from 'react-native';
+import {View, StyleSheet, Text, Button, FlatList, ListItem} from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { RadarImage } from './components/RadarImage'
+import RadarImage from './components/RadarImage'
+import PointRadar from "./components/PointRadar";
+import RadarBar from "./components/RadarBar";
 
 const Tab = createMaterialTopTabNavigator();
-const FadeInView = (props) => {
-  const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
 
-  React.useEffect(() => {
-    Animated.timing(
-      fadeAnim,
-      {
-        toValue: 1,
-        duration: 10000,
-      }
-    ).start();
-  }, [fadeAnim])
-
-  return (
-    <Animated.View                 // Special animatable View
-      style={{
-        ...props.style,
-        opacity: fadeAnim,         // Bind opacity to animated value
-      }}
-    >
-      {props.children}
-    </Animated.View>
-  );
-}
-
-
-function HomeScreen({ navigation }) {
+function Radar1Screen({ navigation }) {
+  const  puntos = [
+    {grados: "-25", distancia : "26"},
+    {grados: "0", distancia : "26"}
+  ]
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: "space-between",
+      position : "absolute",
+      borderColor : "#000",
+      borderWidth : 2,
+      borderColor : "green",
       backgroundColor: "#fff",
-      padding: 20,
-      margin: 10,
     },
-    top: {
-      flex: 0.3,
-      backgroundColor: "grey",
-      borderWidth: 5,
-      borderTopLeftRadius: 200,
-      borderTopRightRadius: 175,
-    },
-    middle: {
-      flex: 0.3,
-      backgroundColor: "beige",
-      borderWidth: 5,
-    },
-    bottom: {
-      position: "absolute",
-      left: 75,
-      top : 75,
-      backgroundColor: "pink",
-      borderWidth: 5,
-      borderBottomLeftRadius: 20,
-      borderBottomRightRadius: 20,
-      width: 5,
-      height: 5,
-    },
+    
   });
 
+  //<RadarBar superior = {25} ancho = {180}/>
   return (
-     <View style={styles.container}>
-        <View style={styles.top} >
-          <View style={styles.bottom}/>
-        </View>
-        <RadarImage/>
-      </View>
-  );
-}
-
-
-function SettingsScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-      <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
+    <View>
+      <RadarImage superior = {25} ancho = {360}/>
+      <RadarBar superior = {25} ancho = {360}/>
+      {parseData(puntos)}
     </View>
   );
 }
 
-function MyTabs() {
+
+
+function Radar2Screen({ navigation }) {
+
+  const  puntos = [
+    {grados: "45", distancia : "26"}
+  ]
+
+
+  const styles = StyleSheet.create({
+    container: {
+      position : "absolute",
+      borderColor : "#000",
+      borderWidth : 2,
+      borderColor : "green",
+      backgroundColor: "#fff",
+    },
+    
+  });
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    
+    <View>
+      <RadarImage superior = {25} ancho = {360}/>
+
+      {parseData(puntos)}
+    </View>
   );
+}
+
+
+function parseData(elementos){
+  if (elementos){
+    return elementos.map((data,i)=>{
+      return (
+        <PointRadar key = {i} top={getY(data)} left={getX(data)}/>
+        )
+    })
+  }
+
+}
+
+function getX(data){
+  return Math.sin(data.grados*Math.PI/180)*data.distancia*(4.5)
+}
+
+function getY(data){
+  return Math.cos(data.grados*Math.PI/180)*data.distancia*(4.5)
 }
 
 export default class App extends Component
@@ -103,8 +90,8 @@ export default class App extends Component
     return(
       <NavigationContainer>
         <Tab.Navigator>
-          <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Settings" component={SettingsScreen} />
+          <Tab.Screen name="Radar 1" component={Radar1Screen} />
+          <Tab.Screen name="Radar 2" component={Radar2Screen} />
         </Tab.Navigator>
       </NavigationContainer>
     );

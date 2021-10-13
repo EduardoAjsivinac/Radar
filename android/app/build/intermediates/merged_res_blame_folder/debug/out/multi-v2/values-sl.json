@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/eduardoajsivinac/Documentos/React Native/radar/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-sl/values-sl.xml",
+            "outputFile": "/home/eduardoajsivinac/Documentos/React Native/radar/Radar/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-sl/values-sl.xml",
             "map": [
                 {
                     "source": "/home/eduardoajsivinac/.gradle/caches/transforms-3/5646db46e2cfb43e7b3d42f3054c498c/transformed/core-1.5.0/res/values-sl/values-sl.xml",
